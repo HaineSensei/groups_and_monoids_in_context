@@ -1,0 +1,293 @@
+% !TEX root = ../../Groups in Context.tex
+\section{Equivalence and quotients}
+The final thing from set theory that will be particularly helpful to know about is the notion of equivalence.
+Up until now, I have been quite free about what I mean by equality. 
+I mentioned how sets are distinguished only by the elements they contain, which I treated as defining equality for them.
+For functions, I was more specific and said that 2 functions are equal if they agree on all outputs.
+
+I didn't dwell on this, but some people might think that two functions defined by different algorithms, but which happen to produce the same values on every input are not truly the same function.
+Indeed, they could be considered different objects if they were treated as algorithms or even functions in a programming sense rather than mathematical functions.
+This is where the precise language is important: I said that 2 functions are equal when that happens, but equality doesn't have to mean the same in every sense!
+This is the essence of what equivalence tries to capture.
+
+To introduce equivalence properly, we need to first introduce relations in general.
+\begin{definition}[Relations]
+    A (binary) relation is a property defined on a pair of sets $A, B$ which is either satisfied, or not satisfied for any given pair $(a,b) \in A \times B$.
+    If the relation is represented by the symbol $\sim$, then $(a, b)$ satisfies $\sim$ is written $a \sim b$.
+\end{definition}
+\begin{remark}
+    The normal way one defines relations is as a generalisation of the function definition that this text has avoided.
+    
+    One can also think of a relation simply as a binary operator (like $+$, $-$, etc.) which has codomain $\{\text{True}, \text{False}\}$. 
+    In this context, $a \sim b$ would be interpreted $\sim(a,b) = \text{True}$. This is non-standard, and so we have avoided this. It is however a good mental model for them.
+\end{remark}
+\begin{remark}
+    There isn't always a way to write ``$a$ is not related to $b$'', however, it is fairly common practice to write this by simply crossing through the relation's symbol:
+    \begin{align*}
+        \sim \quad &\longleftrightarrow \quad \not\sim \\
+        = \quad &\longleftrightarrow \quad \ne \\
+        \mid \quad &\longleftrightarrow \quad \nmid
+    \end{align*}
+\end{remark}
+\begin{remark}
+    The above definition of relations allows them to relate objects from two different sets. While this is useful in many contexts, we will only be working with relations where the two sets are the same.
+    That is, relations will be satisfied by pairs $(x,y) \in A^2$ for a set $A$. As such, from now on a relation on $A$ is a relation on the pair of sets $A$ and $A$.
+\end{remark}
+\begin{definition}[Symmetry]
+    A relation $\sim$ on $A$ is called symmetric if whenever $a \sim b$ (for $a,b\in A$), we also have $b \sim a$.
+\end{definition}
+\begin{definition}[Reflexivity]
+    A relation $\sim$ on $A$ is called reflexive if $a \sim a$ for all $a\in A$.
+\end{definition}
+\begin{definition}[Transitivity]
+    A relation $\sim$ on $A$ is called transitive if whenever $a \sim b$ and $b \sim c$ (for $a,b,c \in A$), we also have $a \sim c$.
+\end{definition}
+\noindent
+These definitions each serve different purposes, and to best familiarise yourself with them, you need to see various examples of relations that satisfy and don't satisfy them. Putting them all together gives us our notion of equivalence.
+\begin{definition}[Equivalence]
+    A relation $\sim$ on $A$ is called an equivalence relation if it symmetric, reflexive, and transitive. 
+\end{definition}
+
+\begin{example}[Equality]
+    These are all properties of $=$ on any set, which makes $=$ our main example of an equivalence relation.
+    \begin{itemize}
+        \item $a = b$ is basically the same thing as $b = a$ when treating it informally.
+        \item $a = a$ is something most people would consider a tautology. Indeed, in some areas of logic, it actually satisfies a definition of tautology!
+        \item If we know that $a = b$ and $b = c$, then we obviously have $a = c$. This is actually the property that motivates the use of chained equalities like $a = b = c$.
+    \end{itemize}
+\end{example}
+\begin{example}[Ordering]
+    There are 4 relations that frequently appear for ordering that aren't equality. Table \ref{order_relation_table} summarises their properties on sets they're defined on.
+    \begin{table}[ht]
+        \centering
+        \begin{tabular}{c|c|c|c}
+        Relation & Symmetric & Reflexive & Transitive \\ \hline
+        $\le$ & \cross & \tick & \tick \\
+        $<$ & \cross & \cross & \tick \\
+        $\ge$ & \cross & \tick & \tick \\
+        $>$ & \cross & \cross & \tick
+        \end{tabular}
+        \caption{Ordering relation properties}
+        \label{order_relation_table}
+    \end{table}
+    The fact that $\le$ and $\ge$ have the same properties and $<$ and $>$ do as well is not a coincidence: $a \le b$ is equivalent to $b \ge a$, and similarly for $<$ and $>$.
+\end{example}
+\begin{definition}[Dual relations]
+    If $\triangleright$ and $\triangleleft$ are relations on $A$, they are called dual if $a \triangleleft b$ exactly when $b \triangleright a$.
+\end{definition}
+\begin{proposition}
+    If $\triangleright$ and $\triangleleft$ are dual relations, then,
+    \begin{enumerate}[label=(\alph*)]
+        \item $\triangleright$ is reflexive if and only if $\triangleleft$ is reflexive,
+        \item $\triangleright$ is transitive if and only if $\triangleleft$ is transitive,
+        \item $\triangleright$ is symmetric if and only if $\triangleleft$ is symmetric,
+    \end{enumerate} 
+    Indeed, if they are symmetric, the same pairs satisfy them.
+\end{proposition}
+\begin{proof}
+    Exercise \ref{dual_relations_exercise}.
+\end{proof}
+\begin{remark}
+    While this book will never use category theory, much of what is covered is generalised in category theory. Dual relations are an example of that: 
+    they are a special case of dual or opposite categories. Indeed, a part of my motivation for writing this book is to provide a categorical view of groups without requiring readers be familiar with category theory itself.
+\end{remark}
+\begin{remark}
+    We won't go further with dual relations since the final point of the above proposition tells us that equivalence relations are self-dual (this is exactly symmetry).
+\end{remark}
+\begin{example}[Trivial relation]
+    Let $S$ be a set. Let $\boxtimes$ be the relation on $S$ such that no pairs $(x,y) \in S^2$ satisfy it. 
+    
+    \medskip\noindent
+    Symmetric:
+    
+    \noindent
+    Suppose there were a pair $(x,y)\in S^2$ with $x \boxtimes y$ and not $y \boxtimes x$, that would be impossible since no pair satisfies $x \boxtimes y$.
+
+    \medskip\noindent
+    Transitive:
+
+    \noindent
+    Suppose there were a triple $(x,y,z)\in S^3$ with $x \boxtimes y$ and $y \boxtimes z$, but not $x \boxtimes z$, again, this would be impossible since no pair of $x$ and $y$ exist satisfying $x \boxtimes y$.
+
+    \medskip\noindent
+    Possibly reflexive:
+    If $S$ is empty, then $\boxtimes$ is vacuously reflexive (like the above two arguments). But if $S$ is not empty, then there is some $x \in S$ and $(x,x)$ does not satisfy $\boxtimes$, so $\boxtimes$ is not reflexive.
+\end{example}
+
+\begin{example}[Circle]
+    Let $\bigcirc$ be a relation on $\R$ such that $(x,y)\in \R^2$ satisfy $\bigcirc$ precisely when $x^2 + y^2 = 1$. (ie, $(x,y)$ satisfies the relation "the pair lies on the unit circle in the plane centred at the origin".)
+    
+    \medskip\noindent
+    Symmetric:
+
+    \noindent
+    Let $(x,y) \in \R^2$. Suppose $x \bigcirc y$, then $x^2 + y^2 = 1$. This means that $y^2 + x^2 = 1$, so $y \bigcirc x$.
+
+    \medskip\noindent
+    Not transitive:
+
+    \noindent
+    We have $1 \bigcirc 0$ and $0 \bigcirc 1$, but we do not have $1 \bigcirc 1$ since $1^2 + 1^2 = 2 \ne 1$.
+
+    \medskip\noindent
+    Not reflexive:
+
+    \noindent
+    We do not have $1 \bigcirc 1$.
+\end{example}
+
+\begin{example}
+    Let $\ddagger$ be a relation on the set $\{\text{\emoji{clubs}},\text{\emoji{diamonds}},\text{\emoji{hearts}},\text{\emoji{spades}}\}$ defined with the relation table in Table \ref{suits_table}:
+    \begin{table}[ht!]
+        \centering
+        \begin{tabular}{c|c|c|c|c}
+        $\ddagger$ & \emoji{clubs} & \emoji{diamonds} & \emoji{hearts} & \emoji{spades} \\ \hline
+        \emoji{clubs} & \tick & \cross & \tick & \cross \\ \hline
+        \emoji{diamonds} & \tick & \tick & \cross & \cross \\ \hline
+        \emoji{hearts} & \tick & \cross & \tick & \tick \\ \hline
+        \emoji{spades} & \cross & \cross & \tick & \cross 
+        \end{tabular}
+        \caption{Description of an example relation on suits}
+        \label{suits_table}
+    \end{table}
+
+    \noindent
+    Not symmetric:
+
+    \noindent
+    $\text{\emoji{diamonds}} \ddagger \text{\emoji{clubs}}$ but not $\text{\emoji{clubs}} \ddagger \text{\emoji{diamonds}}$.
+
+    \medskip\noindent
+    Not transitive:
+    
+    \noindent
+    $\text{\emoji{diamonds}} \ddagger \text{\emoji{clubs}}$, and $\text{\emoji{clubs}} \ddagger \text{\emoji{hearts}}$, but not $\text{\emoji{diamonds}} \ddagger \text{\emoji{hearts}}$.
+
+    \medskip\noindent
+    Not reflexive:
+
+    \noindent
+    Not $\text{\emoji{spades}} \ddagger \text{\emoji{spades}}$.
+\end{example}
+
+\begin{example}[Modular arithmetic]
+    Let $n$ be an integer, then let $\equiv_n$ be the relation on $\Z$ where $(a,b) \in \Z^2$ satisfies $\equiv_n$ precisely when $a - b$ is divisible by $n$.
+
+    \medskip\noindent
+    Symmetric:
+    
+    \noindent
+    If $a \equiv_n b$, then $a - b = kn$ for some $k \in \Z$. So, $b - a = (-k)n$, so $b - a$ is also divisible by $n$, and $b \equiv_n a$.
+
+    \medskip\noindent
+    Transitive:
+
+    \noindent
+    If $a \equiv_n b$ and $b \equiv_n c$ for some $a,b,c \in \Z$, then $a - b = k_1n$ for some $k_1 \in \Z$ and $b - c = k_2n$ for some $k_2 \in \Z$. Together, we have $a - c = (a - b) + (b - c) = k_1n + k_2n = (k_1 + k_2)n$, so $a-c$ is divisible by $n$, and $a \equiv_n c$.
+
+    \medskip\noindent
+    Reflexive:
+
+    \noindent
+    If $a \in \Z$, then $a - a = 0 = 0\times n$, so $a - a$ is divisible by $n$, and $a \equiv_n a$.
+\end{example}
+\begin{remark}
+    This is our first example of an equivalence relation on a set which is not just equality. Indeed, for $n = 3$, we have $1 \equiv_3 7$ despite $1 \ne 7$. As it turns out, for $n = 0$, this does actually just reduce to equality, because multiples of 0 are all identically 0, but all other cases produce non-equality equivalences.
+\end{remark}
+
+\begin{definition}[Partitions]
+    Let $S$ be a set. A partition of $S$ is a subset $\mathcal{P} \subseteq \powerset(S)$ such that:
+    \begin{itemize}
+        \item (Covering) for every element $s \in S$, there is some $P \in \mathcal{P}$ with $s \in P$,
+        \item (Pairwise disjoint) if $P_1, P_2 \in \mathcal{P}$, then either $P_1 = P_2$ or $P_1 \cap P_2 = \varnothing$.
+        \item (Non-empty pieces) every $P\in \mathcal{P}$ is non-empty.
+    \end{itemize}
+\end{definition}
+\begin{remark}
+    Mathematical texts have a tendency to label generic objects by the first letter of what they are. This often causes overlaps in notation as seen in the above definition where there are 3 different kinds of the letter P involved. 
+    This doesn't happen particularly frequently, but when it does, it can be a bit awkward (particularly when working by hand). The symbols used are completely irrelevant, so in your own work, it is completely acceptable to use different letters.
+\end{remark}
+\begin{remark}
+    Partitions aren't always expressed as a set of subsets, sometimes, they are presented in some other form of collection or just listed.
+\end{remark}
+\begin{example}
+    The sets $\{ x \in \Z \mid \text{$x$ is odd} \}$ and $\{ x \in \Z \mid \text{$x$ is even} \}$ form a partition of $\Z$.
+\end{example}
+\begin{definition}[Fibres of a map]
+    Let $f \colon A \to B$ be a map. For every $b \in B$, we say the fibre of $b$ under $f$ is the pre-image of $b$ under $f$. That is the set
+    \begin{equation*}
+        \{ a \in A \mid f(a) = b \}
+    \end{equation*}
+\end{definition}
+\begin{remark}
+    At this point, it would be nice to show that for any map $f \colon A \to B$, the non-empty fibres of $f$ form a partition of $A$. Indeed, it we could very well at this point, but I'm going to wait so that we can use our next theorem to prove it.
+\end{remark}
+\begin{definition}[Equivalence classes]
+    Let $S$ be a set with an equivalence relation $\sim$ on it. Let $x \in S$, then the $\sim$-equivalence class of $x$ is the set of all elements $y \in S$ for which $x \sim y$. We write this $[x]_{\sim}$ or just $[x]$ if the equivalence relation is clear.
+\end{definition}
+
+\begin{theorem}[Equivalences partition]
+    If $S$ is a set with an equivalence $\sim$ on it, then the set $\{ [x]_{\sim} \mid x \in S \}$ is a partition of $S$. 
+    
+    \medbreak\noindent
+    Further, if $\mathcal{P}$ is a partition of $S$, then we can define a relation $\sim_{\mathcal{P}}$ defined:
+    \begin{equation*}    
+        \text{$x \sim_{\mathcal{P}} y$ when $x$ and $y$ lie in the same partition.}
+    \end{equation*}
+    $\sim_{\mathcal{P}}$ is an equivalence relation whose equivalence classes are exactly the subsets of $S$ in $\mathcal{P}$.
+    \label{equivalences_partition}
+\end{theorem}
+\begin{proof}
+    For the first part, every $x \in [x]_{\sim}$ since $x \sim x$ by reflexivity which shows both covering and that all pieces are non-empty. We also need to show that for any pair of $x,y\in S$, the corresponding $[x]_{\sim}, [y]_{\sim}$ are either equal or have no intersection.
+    
+    \smallskip\noindent
+    Suppose they have a non-empty intersection, then there is some $z \in [x]_{\sim} \cap [y]_{\sim}$.
+    
+    \noindent
+    By the definition of equivalence classes, that means $x \sim z$ and $y \sim z$. 
+    
+    \noindent
+    But that means that $z \sim y$ by symmetry. 
+    
+    \noindent
+    Transitivity tells us that $x \sim z \sim y$ means that $x \sim y$, and symmetry gives us $y \sim x$.
+    
+    \noindent
+    So $x \in [y]_{\sim}$ and $y \in [x]_{\sim}$.
+
+    \smallskip\noindent
+    Now, suppose that $w \in [x]_{\sim}$. Then $x \sim w$. But we know $y \sim x \sim w$, so $y \sim w$ by transitivity. So $w \in [y]_{\sim}$.
+    This shows that $[x]_{\sim} \subseteq [y]_{\sim}$, and a symmetric argument shows the reverse inclusion, so $[x]_{\sim} = [y]_{\sim}$.
+
+    \medskip\noindent
+    The second part is exercise \ref{partition_equivalence_exercise}.
+\end{proof}
+
+\begin{corollary}[Non-empty fibres partition]
+    If $f \colon A \to B$ is a map, then the non-empty fibres of $f$ form a partition of $A$.
+\end{corollary}
+\begin{proof}
+    Let's define an equivalence relation $\sim_f$ on $A$ by $x \sim_f y$ when $f(x) = f(y)$.
+    It is easy to check that this is symmetric, transitive, and reflexive (do so!), so this is indeed an equivalence relation.
+    Looking at the definitions, the equivalence classes of $\sim_f$ are:
+    \begin{equation*}
+        [x]_{\sim_f} := \{ y \in A \mid x \sim_f y \} = \{ y \in A \mid f(y) = f(x) \}
+    \end{equation*}
+    But that's just the fibre of $f(x)$ under $f$.
+    Theorem \ref{equivalences_partition} tells us these fibres of the images of elements of $A$ under $f$ partition $A$. These are exactly the non-empty fibres: the fibre of $b$ is non-empty if there is some $a \in A$ such that $f(a) = b$.
+\end{proof}
+
+\noindent
+We have now defined equivalence relations and shown that they are strongly related to partitions. Now we'll show how we can turn these equivalence relations into equalities.
+
+\begin{definition}[Quotients]
+    Let $S$ be a set with an equivalence relation $\sim$ on $S$. Define the quotient of $S$ by $\sim$, written $S/\sim$ by
+    \begin{equation*}
+        S/\sim \;\;:= \{[x] \mid x \in S \}
+    \end{equation*}
+\end{definition}
+\begin{remark}
+    This may not feel any different to things we've done before, but the reason it's important is that we now have $[\cdot] \colon S \to S/\sim$ acting as a map that transforms $x \sim y$ into $[x] = [y]$. This map is also special in the sense that the fibre of $[x] \in S/\sim$ under $[\cdot]$ is exactly $[x]$ itself.
+\end{remark}
+\noindent
+There isn't much more important to say about equivalence relations, partitions, fibres and quotients in the context of sets, but they are very important in the context of groups.

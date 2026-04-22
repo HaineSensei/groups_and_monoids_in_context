@@ -1,0 +1,134 @@
+% !TEX root = ../../Groups in Context.tex
+\section{Sets}
+This introductory chapter aims to provide the necessary definitions and intuition about sets required for the rest of the book. The definitions given here will not be those one might find in a formal set theory book, since that is not a very helpful way to introduce ideas. As such, our first definition is as follows:
+\begin{definition}[Sets and elements]
+    A set is a collection of objects which is only distinguished by what objects it contains. The objects a set contains are called its elements.
+\end{definition}
+\noindent
+This definition begs the question "What is an object?" For the purposes of this book, anything is an object: a carrot, your hat if you're wearing one, the concept of love, etc. Of course, in most cases, we will be using more abstract objects like numbers.
+
+There are a number of ways we can write sets. As is standard from modern algebraic practices, we can simply represent a set by a symbol like $A$, $S$, $x$, etc.
+Most of the time, I will use capital letters for sets and lowercase letters for the objects they contain, but there are contexts in which sets contain other sets and for those, this convention somewhat breaks down.
+
+More concretely, we can describe a set by listing its elements. Following mathematical convention, we do this inside curly braces like $\{\text{\emoji{carrot}},\text{\emoji{top-hat}},5, \pi\}$.
+\begin{remark}
+    Since sets are only distinguished by what objects they contain, there is no such thing as order or repeats in a set, so $\{1, 1\}$ is the same as $\{ 1 \}$, and $\{1,2\}$ is the same as $\{2,1\}$.
+    They are however distinguished by whether they contain different things, so $\{1,2\} \ne \{1\}$ because the first contains 2 and the second does not.
+\end{remark}
+\begin{definition}[Containment]
+    If a set $S$ contains an object $x$, we say $x \in S$ read ``$x$ is in $S$'' or ``$x$ is an element of $S$'' or ``$x$ is a member of $S$''. Otherwise, $S$ does not contain $x$, written $x\notin S$.
+\end{definition}
+\begin{definition}[Subsets]
+    A set $A$ is said to be a subset of $B$ if every $a \in A$ is also in $B$. This is written $A \subseteq B$. A subset $A \subseteq B$ is called proper if $A \ne B$ (it doesn't contain \emph{all} the elements of $B$) written $A \subset B$
+\end{definition}
+\begin{remark}
+    The notation for subsets is quite inconsistent among texts. The notation above is one of the main conventions, while the main alternative is using $A \subset B$ to simply mean $A$ is a subset of $B$ and using $\subsetneq$ when specifying proper subsets. Some people may also prefer to use only $\subseteq$ and $\subsetneq$ to be clear at all uses.
+
+    \medskip\noindent
+    I have chosen the convention in the definition because it matches the symbols $<$ and $\le$ which will be used frequently when discussing groups.
+\end{remark}
+
+\noindent
+The main other way of writing sets is by set comprehension
+\begin{definition}[Set comprehension]
+    If we have a set $S$, we can build a subset of it by restricting to those satisfying certain properties, written $\{ x\in S \mid P(x) \}$ or $\{ x \in S \colon P(x) \}$ where $P(x)$ is a property of $x$.
+\end{definition}
+\begin{remark}
+    We may sometimes also describe a set with a more advanced comprehension which includes an expression on the left hand side of the $\mid$. If this is the case, the right hand side must specify the sets any unknowns belong to (see Example \ref{rational_numbers} for a simple example). This restriction is mostly in place to avoid ill-formed sets\footnote{Russell's paradox is well known and is based on one such ill-formed set: $\{ x \mid x \notin x \}$. The paradox then arises from asking whether this set is an element of itself. I recommend thinking through this question so you can see for yourself the paradox that arises.}.
+\end{remark}
+
+\noindent
+We now have some basic definitions in place. It would now help to have some common sets in place for us to work with.
+\begin{example}[Empty set]
+    The empty set is the set which contains nothing, I will normally write it $\varnothing$, but it can also be written $\{\}$ if that is more consistent with the context.
+\end{example}
+\begin{remark}[The set of everything]
+    Due to the restrictions on set comprehension, the most well-used foundation of set theory (ZFC set theory) actually prevents the construction of the set of everything. There are some foundations which do allow it, but they make alternative restrictions to avoid the same issues.
+\end{remark}
+\begin{example}[Natural numbers]
+    The natural numbers are, informally, the counting numbers. They are the numbers 0, 1, 2, 3, \dots. Together, they are written $\N := \{0,1,2,\dots \}$.
+\end{example}
+\begin{remark}
+    Some texts do not include 0 as a natural number (particularly those around number theory), but we have included it in our definition.
+\end{remark}
+\begin{example}[Integers]
+    The integers are all whole numbers, positive and negative. Together, we write them $\Z := \{\dots,-2,-1,0,1,2,\dots\}$.
+\end{example}
+\begin{example}[Integer intervals]
+    For integers $a,b \in \Z$, the set of integers between them (inclusive) is called an integer interval and written $\llb a,b \rrb := \{a,a+1,\dots,b-1,b\}$.
+\end{example}
+\begin{remark}
+    This notation for integer ranges is not universal, but does appear in some texts, and can be quite useful.
+\end{remark}
+\begin{example}[Rational numbers] \label{rational_numbers}
+    The rational numbers are those which can be expressed as a ratio of two integers. We write them $\Q := \left\{\frac{a}{b} \mid a,b \in \Z ,\; b \ne 0 \right\}$.
+\end{example}
+\begin{example}[Real numbers]
+    The real numbers are somewhat difficult to define formally, but they can be thought of as any number on the number line. They are written $\R$ and contain numbers such as $0,1,\sqrt{2}$, and $-\pi$.
+\end{example}
+\begin{example}[Intervals]
+    For real numbers $a,b \in \R$ (with $a < b$), the sets of real numbers between $a$ and $b$ can be written:
+    \begin{align*}
+        (a,b) &:= \{ x \in \R \mid a < x < b \} \\
+        [a,b] &:= \{ x \in \R \mid a \le x \le b \}
+    \end{align*}
+    These are called the open and closed intervals from $a$ to $b$ respectively.
+
+    \medskip\noindent
+    We can also mix open and closed ends to include one end but exclude the other:
+    \begin{align*}
+        [a,b) &:= \{ x \in \R \mid a \le x < b \} \\
+        (a,b] &:= \{ x \in \R \mid a < x \le b \}
+    \end{align*}
+
+\end{example}
+\begin{example}[Complex numbers]
+    The complex numbers are an extension of the real numbers and consist of all numbers of the form $a + ib$ where $a, b \in \R$ and $i$ is a special number satisfying $i^2 = -1$.
+    They are written $\C := \{ a + ib \mid a,b \in \R \}$. These will rarely be used in this book, but can occasionally be used to make interesting examples.
+\end{example}
+\begin{example}[The Latin alphabet]\label{alphabet}
+    The letters in the Latin alphabet form a set which will be written:
+    \begin{equation*}
+        \A := \{\text{a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}\}.
+    \end{equation*}
+    I will write them in the standard text font to distinguish them from other algebraic symbols which frequently use an italic font.
+\end{example}
+\begin{remark}
+    This is not a standard notation for the alphabet, but it will be useful in some early examples, so I have included it.
+\end{remark}
+\begin{example}[Power sets]
+    Given a set $S$, we can construct the set of all subsets of $S$ and denote it $\powerset(S)$.
+\end{example}
+\begin{remark}
+    Informally, $\powerset(S) := \{ X \mid X \subseteq S \}$.
+    But formally, this set comprehension is not allowed as there is no restriction on the set $X$ belongs to.
+
+    \medskip\noindent
+    However, now that power sets have been defined, we can allow such set comprehensions in future by treating $X \subseteq S$ as shorthand for $X \in \powerset(S)$.
+\end{remark}
+
+\noindent
+3 final operations on sets are particularly useful, so are defined here.
+
+\begin{definition}[Union and intersection]
+    If $X$ and $Y$ are sets, we can construct
+    \begin{itemize}
+        \item the union of $X$ and $Y$ as the set containing all elements of $X$ and all elements of $Y$. This is written $X \cup Y$.
+        \item the intersection of $X$ and $Y$ as the set containing all elements in both $X$ and $Y$. This is written $X \cap Y$.
+    \end{itemize}
+\end{definition}
+\begin{definition}[Subtraction]
+    If $X$ and $Y$ are sets, then $X \setminus Y := \{ x \in X \mid x \notin Y \}$.
+\end{definition}
+\begin{remark}
+    This is sometimes alternatively written $X - Y$, but in algebraic contexts, this often confuses things, so I will not use this notation.
+\end{remark}
+\begin{example}
+    Let $X = \{1, 3, 5, 7, 9\}$, $Y = \{2, 3, 5, 7\}$. Then:
+    \begin{align*}
+        X \cup Y &= \{1, 2, 3, 5, 7, 9\}, \\
+        X \cap Y &= \{3, 5, 7\}, \\
+        X \setminus Y &= \{1, 9\}, \\
+        Y \setminus X &= \{2\}.
+    \end{align*}
+\end{example}

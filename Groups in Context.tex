@@ -13,6 +13,7 @@
 \usepackage{xcolor}
 \usepackage{tikz-cd}
 \usepackage{mathtools}
+\usepackage{pifont}
 
 \geometry{margin=1in}
 
@@ -20,7 +21,7 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 \newtheorem{example}[definition]{Example}
-\newtheorem{exercise}{Exercise}[section]
+\newtheorem{exercise}{Exercise}[chapter]
 
 \theoremstyle{plain}
 \newtheorem{theorem}[definition]{Theorem}
@@ -45,9 +46,12 @@
 \newcommand{\A}{\mathcal{A}}
 \newcommand{\llb}{⟦}
 \newcommand{\rrb}{⟧}
-\newcommand{\powerset}{\mathcal{P}}
+\newcommand{\powerset}{\mathbb{P}}
 
 \DeclareMathOperator{\Id}{Id}
+
+\newcommand{\tick}{\ding{51}}
+\newcommand{\cross}{\ding{55}}
 
 \title{\textbf{Groups in Context}\\[0.5em]
 \large An Introduction to Group Theory for Undergraduates}
@@ -59,305 +63,7 @@
 \maketitle
 \tableofcontents
 
-\setcounter{chapter}{-1}
-\chapter{Basics of sets}
-\section{Sets}
-This introductory chapter aims to provide the necessary definitions and intuition about sets required for the rest of the book. The definitions given here will not be those one might find in a formal set theory book, since that is not a very helpful way to introduce ideas. As such, our first definition is as follows:
-\begin{definition}[Sets and elements]
-    A set is a collection of objects which is only distinguished by what objects it contains. The objects a set contains are called its elements. 
-\end{definition}
-\noindent
-This definition begs the question "What is an object?" For the purposes of this book, anything is an object: a carrot, your hat if you're wearing one, the concept of love, etc. Of course, in most cases, we will be using more abstract objects like numbers.
-
-There are a number of ways we can write sets. As is standard from modern algebraic practices, we can simply represent a set by a symbol like $A$, $S$, $x$, etc. 
-Most of the time, I will use capital letters for sets and lowercase letters for the objects they contain, but there are contexts in which sets contain other sets and for those, this convention somewhat breaks down.
-
-More concretely, we can describe a set by listing its elements. Following mathematical convention, we do this inside curly braces like $\{\text{\emoji{carrot}},\text{\emoji{top-hat}},5, \pi\}$.
-\begin{remark}
-    Since sets are only distinguished by what objects they contain, there is no such thing as order or repeats in a set, so $\{1, 1\}$ is the same as $\{ 1 \}$, and $\{1,2\}$ is the same as $\{2,1\}$.
-    They are however distinguished by whether they contain different things, so $\{1,2\} \ne \{1\}$ because the first contains 2 and the second does not.
-\end{remark}
-\begin{definition}[Containment]
-    If a set $S$ contains an object $x$, we say $x \in S$ read ``$x$ is in $S$'' or ``$x$ is an element of $S$'' or ``$x$ is a member of $S$''. Otherwise, $S$ does not contain $x$, written $x\notin S$.
-\end{definition}
-\begin{definition}[Subsets]
-    A set $A$ is said to be a subset of $B$ if every $a \in A$ is also in $B$. This is written $A \subseteq B$. A subset $A \subseteq B$ is called proper if $A \ne B$ (it doesn't contain \emph{all} the elements of $B$) written $A \subset B$
-\end{definition}
-\begin{remark}
-    The notation for subsets is quite inconsistent among texts. The notation above is one of the main conventions, while the main alternative is using $A \subset B$ to simply mean $A$ is a subset of $B$ and using $\subsetneq$ when specifying proper subsets. Some people may also prefer to use only $\subseteq$ and $\subsetneq$ to be clear at all uses.
-    
-    \medskip\noindent
-    I have chosen the convention in the definition because it matches the symbols $<$ and $\le$ which will be used frequently when discussing groups.
-\end{remark}
-
-\noindent
-The main other way of writing sets is by set comprehension
-\begin{definition}[Set comprehension]
-    If we have a set $S$, we can build a subset of it by restricting to those satisfying certain properties, written $\{ x\in S \mid P(x) \}$ or $\{ x \in S \colon P(x) \}$ where $P(x)$ is a property of $x$.
-\end{definition}
-\begin{remark}
-    We may sometimes also describe a set with a more advanced comprehension which includes an expression on the left hand side of the $\mid$. If this is the case, the right hand side must specify the sets any unknowns belong to (see Example \ref{rational_numbers} for a simple example.)
-\end{remark}
-
-\noindent
-We now have some basic definitions in place. It would now help to have some common sets in place for us to work with.
-\begin{example}[Natural numbers]
-    The natural numbers are, informally, the counting numbers. They are the numbers 0, 1, 2, 3, \dots. Together, they are written $\N := \{0,1,2,\dots \}$.
-\end{example}
-\begin{remark}
-    Some texts do not include 0 as a natural number (particularly those around number theory), but we have included it in our definition.
-\end{remark}
-\begin{example}[Integers]
-    The integers are all whole numbers, positive and negative. Together, we write them $\Z := \{\dots,-2,-1,0,1,2,\dots\}$.
-\end{example}
-\begin{example}[Integer intervals]
-    For integers $a,b \in \Z$, the set of integers between them (inclusive) is called an integer interval and written $\llb a,b \rrb := \{a,a+1,\dots,b-1,b\}$.
-\end{example}
-\begin{remark}
-    This notation for integer ranges is not universal, but does appear in some texts, and can be quite useful.
-\end{remark}
-\begin{example}[Rational numbers] \label{rational_numbers}
-    The rational numbers are those which can be expressed as a ratio of two integers. We write them $\Q := \left\{\frac{a}{b} \mid a,b \in \Z ,\; b \ne 0 \right\}$.
-\end{example}
-\begin{example}[Real numbers]
-    The real numbers are somewhat difficult to define formally, but they can be thought of as any number on the number line. They are written $\R$ and contain numbers such as $0,1,\sqrt{2}$, and $-\pi$.
-\end{example}
-\begin{example}[Intervals]
-    For real numbers $a,b \in \R$ (with $a < b$), the sets of real numbers between $a$ and $b$ can be written:
-    \begin{align*}
-        (a,b) &:= \{ x \in \R \mid a < x < b \} \\
-        [a,b] &:= \{ x \in \R \mid a \le x \le b \} 
-    \end{align*}
-    These are called the open and closed intervals from $a$ to $b$ respectively.
-
-    \medskip\noindent
-    We can also mix open and closed ends to include one end but exclude the other:
-    \begin{align*}
-        [a,b) &:= \{ x \in \R \mid a \le x < b \} \\
-        (a,b] &:= \{ x \in \R \mid a < x \le b \} 
-    \end{align*}
-
-\end{example}
-\begin{example}[Complex numbers]
-    The complex numbers are an extension of the real numbers and consist of all numbers of the form $a + ib$ where $a, b \in \R$ and $i$ is a special number satisfying $i^2 = -1$.
-    They are written $\C := \{ a + ib \mid a,b \in \R \}$. These will rarely be used in this book, but can occasionally be used to make interesting examples.
-\end{example}
-\begin{example}[The Latin alphabet]\label{alphabet}
-    The letters in the Latin alphabet form a set which will be written:
-    \begin{equation*}
-        \A := \{\text{a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}\}.
-    \end{equation*}
-    I will write them in the standard text font to distinguish them from other algebraic symbols which frequently use an italic font.
-\end{example}
-\begin{remark}
-    This is not a standard notation for the alphabet, but it will be useful in some early examples, so I have included it.
-\end{remark}
-\begin{example}[Power sets]
-    Given a set $S$, we can construct the set of all subsets of $S$ and denote it $\powerset(S)$.
-\end{example}
-\begin{remark}
-    Informally, $\powerset(S) := \{ X \mid X \subseteq S \}$. 
-    But formally, this set comprehension is not allowed as there is no restriction on the set $X$ belongs to.
-    
-    \medskip\noindent
-    However, now that power sets have been defined, we can allow such set comprehensions in future by treating $X \subseteq S$ as shorthand for $X \in \powerset(S)$.
-\end{remark}
-
-\section{Tuples and maps}
-Now we have a notion of set, we should talk about what sorts of objects will frequently appear besides numbers.
-\begin{definition}[products and $n$-tuples]
-    If we have a set $A$ and another set $B$, we can form the (cartesian) product of $A$ with $B$:
-    \begin{equation*}
-        A \times B := \{(a,b) \mid a \in A, b \in B \}.
-    \end{equation*}
-    Here, $(a,b)$ is an ordered pair, so $(a,b) = (c,d)$ if and only if $a = c$ and $b = d$.
-
-    \medskip\noindent
-    Similarly, if we have $n\in \N$ and $n$ sets $A_1,\dots,A_n$, we can form their cartesian product:
-    \begin{equation*}
-        \prod_{i=1}^n A_i := \{ (a_1,\dots,a_n) \mid \text{$a_i \in A_i$ for each $i \in \llb 1,n \rrb$}\}.
-    \end{equation*}
-    where each $(a_1,\dots,a_n)$ is an $n$-tuple which is again ordered, so $(a_1,\dots,a_n) = (b_1,\dots,b_n)$ if and only if $a_i = b_i$ for every $i \in \llb 1,n \rrb$.
-    
-    \medskip\noindent
-    In the case where all $A = A_i$ for every $i \in \llb 1, n \rrb$, we may also denote this set as $A^n$.
-\end{definition}
-\begin{remark}
-    Ordered pairs are just another name for 2-tuples. 3-tuples are often called triples. It is acceptable (but rare) to continue using this naming scheme.
-\end{remark}
-\begin{remark}
-    Notice that for $a,b \in \R$ with $a < b$, the expression $(a,b)$ is ambiguous: it could refer to an open interval, and it could refer to an ordered pair. 
-    These are unfortunately, both fairly standard notations, and thus, this ambiguity appears a lot. 
-    It does not generally cause much confusion though, since context almost always makes it clear which way it should be interpreted\footnote{In programming, objects often have a specific type. The same concept can be used to formalise mathematics. This approach largely solves the problem of ambiguities like this, since $(a,b)$ will be specified as either of type Interval or type $\R^2$.}.
-\end{remark}
-
-\noindent
-Tuples are normally used to define functions, but the definition which uses them is not a helpful definition, it is simply one made out of necessity when people were formalising mathematics with set theory. As such, I present an alternative definition:
-\begin{definition}[Maps]
-    A map (or function) $f$ is an object with a domain set $A$ and a codomain $B$ which, to each element of $A$ assigns a unique element of $B$. This is denoted $f \colon A \to B$, read ``$f$ is a map from $A$ to $B$''. 
-    
-    \medskip\noindent
-    The unique element of $B$ assigned to a specific $a \in A$ is written $f(a)$, read ``$f$ of $a$'', so $f(a) \in B$ for any $a \in A$.
-
-    \medskip\noindent
-    We can also write $f\colon a \mapsto b$ for $a\in A, b\in B$ to say that $f(a) = b$.
-
-    Two functions $f,g \colon A \to B$ are considered equal if $f(a) = g(a)$ for every $a \in A$.
-\end{definition}
-\begin{remark}
-    The unique assignment a function performs does not have to be described by an algorithm to produce it in general. 
-\end{remark}
-\begin{example}
-    Following on from the remark, the following is a valid function $\llb 1, 5 \rrb \to \{\text{\emoji{grapes}},\text{\emoji{cat}},\text{\emoji{house}}\}$:
-    \begin{align*}
-                 1 & \longmapsto \text{\emoji{grapes}} \\
-                 2 & \longmapsto \text{\emoji{house}} \\
-        f \colon 3 & \longmapsto \text{\emoji{house}} \\
-                 4 & \longmapsto \text{\emoji{grapes}} \\
-                 5 & \longmapsto \text{\emoji{house}}
-    \end{align*}
-\end{example}
-\begin{example}[Identity]
-    For any set $S$, there is a function $\Id_S \colon S \to S$ which does nothing:
-    \begin{equation*}
-        \Id_S \colon s \mapsto s
-    \end{equation*}
-    so, $\Id_S(s) = s$.
-\end{example}
-
-\begin{definition}[Composition of functions]
-    A pair of functions $f \colon A \to B$, $g \colon B \to C$ can be composed to obtain a function $g \circ f \colon A \to C$ given by:
-    \begin{equation*}
-        g \circ f \colon a \overset{f}{\longmapsto} f(a) \overset{g}{\longmapsto} g(f(a))
-    \end{equation*}
-\end{definition}
-\begin{remark}
-    It's important to notice that $g \circ f$ does not mean ``apply $g$, then apply $f$'' but instead the reverse. 
-    This can confuse people, but this convention is so that the order of functions matches how you would write application without the composition operation:
-    \begin{equation*}
-        (g \circ f)(a) = g(f(a))
-    \end{equation*}
-    This is largely due to the convention of how function application is written\footnote{Alternatives conventions include: $f x$, $(x)f$, $x f$. ie. omitting the brackets when unnecessary, reversing the order, and the combination of both. Arguably the last of these is the most natural to use in the contexts this book will cover, but I have chosen the most common notation for reader familiarity.}.
-\end{remark}
-
-\begin{definition}[Injections, surjection, and bijections]
-    A map $f \colon A \to B$ is called injective if, whenever $f(a_1) = f(a_2)$, $a_1 = a_2$. That is, no two elements of $A$ are mapped to the same element of $B$. Such a map is called an injection.
-
-    \medskip\noindent
-    A map $f \colon A \to B$ is called surjective if, for every $b \in B$, there is some $a \in A$ with $f(a) = b$. That is, $f$ maps onto every element of $B$. Such a map is called a surjection.
-
-    \medskip\noindent
-    A map $f \colon A \to B$ is called bijective if it is both injective and surjective.
-\end{definition}
-
-\begin{definition}
-    A map $f \colon A \to B$ is called invertible if there is a map $g \colon B \to A$ such that $g \circ f = \Id_A$ and $f \circ g = \Id_B$. The map $g$ is called the inverse of $f$.
-\end{definition}
-\begin{remark}
-    Formally, this definition does not prove that a function only has 1 inverse if it has one, but Exercise \ref{unique_inverse} shows that inverses are unique if they exist.
-\end{remark}
-
-\begin{example}[Identity maps are invertible and bijective]
-    To show $\Id_S \colon S \to S$ is invertible, we must find an inverse function $f \colon S \to S$ which reverses the operation of $\Id_S$. But we said that the identity maps do nothing to their elements, so surely if we do nothing to them twice we'll still end up doing nothing? Indeed,
-    \begin{equation*}
-        \begin{tikzcd}[row sep=0.1em]                                                               
-            \mathllap{\Id_S \circ \Id_S \;\colon\:} s \arrow[r, maps to, "{\Id_S}"]
-                & s \arrow[r, maps to, "{\Id_S}"]
-                & s \arrow[d, equal] \\
-            \mathllap{\phantom{\Id_S \circ{}}\Id_S \;\colon\:} s \arrow[rr, maps to, "{\Id_S}"']       
-                & {}                                                                                
-                & s
-        \end{tikzcd}    
-    \end{equation*}
-    The two functions agree on their assigned values, and therefore are equal. This covers both left and right compositions of the inverse, so $\Id_S$ is invertible with itself as its inverse. 
-    
-    \medskip\noindent
-    $\Id_S$ is injective if $\Id_S(s_1) = \Id_S(s_2)$ implies that $s_1 = s_2$. This is trivial:
-    \begin{equation*}
-        s_1 = \Id_S(s_1) = \Id_S(s_2) = s_2
-    \end{equation*}
-\end{example}
-\begin{example}[Addition]
-    Addition is normally called a binary operator, which is just a function on pairs:
-    \begin{align*}
-        +\, \colon \R \times \R &\longrightarrow\:\:\: \R \\
-                        (a,b)\; &\longmapsto     a + b
-    \end{align*}
-    $+$ is not an injection since $1 + 2 = 0 + 3$ for example. ie. $+$ applied to the pairs $(1,2)$ and $(0,3)$ give the same result.
-    
-    \medskip\noindent
-    $+$ is a surjection since any $r \in \R$ can be obtained as $0 + r$.
-    Once we have proven Theorem \ref{bijective_invertible}, we'll see that this means that addition is not invertible.
-\end{example}
-\begin{example}[Addition by a constant]
-    Addition itself is not an injection, but how about addition by a constant? Consider $(c+\phantom{})$ as a function $\R \to \R$ defined by
-    \begin{equation*}
-        (c+\phantom{}) \colon r \longmapsto c + r
-    \end{equation*}
-    Now, $(c + \phantom{})$ is injective if whenever $c + r_1 = c + r_2$, we have $r_1 = r_2$. But that's obvious because we can just subtract $c$ from both sides. 
-    
-    This argument tells us exactly what we should expect the inverse of $(c + \phantom{})$ to be: $(-c + \phantom{})$. Indeed,
-    \begin{align*}
-        \big((c + \phantom{}) \circ (-c + \phantom{})\big)(r) &= (c + \phantom{})((-c + \phantom{})(r)) \\
-        &= (c + \phantom{})(-c + r) \\
-        &= c + -c + r \\
-        &= r \\
-        &= \Id_{\R}(r)
-    \end{align*}
-    This shows that $(c + \phantom{}) \circ (-c + \phantom{}) = \Id_{\R}$, we also need to show that $(-c + \phantom{}) \circ (c + \phantom{}) = \Id_{\R}$ which follows naturally by a similar chained equality. Thus, $(-c + \phantom{})$ is the inverse map to $(c + \phantom{})$.
-    This is the way in which subtraction is the inverse of addition despite the fact that addition itself is not invertible.
-\end{example}
-
-\begin{theorem}[bijective if and only if invertible]\label{bijective_invertible}
-    Let $f \colon A \to B$ be a map. $f$ is bijective if and only if it is invertible.
-\end{theorem}
-\begin{proof}
-    Suppose $f$ is invertible, then it has inverse $g \colon B \to A$.
-
-    \medskip\noindent
-    Injective:
-
-    \noindent
-    Let $a_1, a_2 \in A$ be such that $f(a_1) = f(a_2)$, then $g(f(a_1)) = g(f(a_2))$, but $g$ is the inverse of $f$, so 
-    \begin{equation*}
-        a_1 = (g\circ f)(a_1) = g(f(a_1)) = g(f(a_2)) = (g\circ f)(a_2) = a_2.
-    \end{equation*}
-    Surjective:
-
-    \noindent
-    Let $b \in B$, then $g(b) \in A$. 
-    \begin{equation*}
-        f(g(b)) = (f \circ g)(b) = b
-    \end{equation*}
-    Thus, we have found an element of $A$ which maps onto $b$. This argument did not depend on $b \in B$, so any $b \in B$ has such an element of $A$.
-
-    \medskip\noindent
-    Conversely, suppose $f$ is bijective. We wish to construct a function $g \colon B \to A$ which is inverse to $f$.
-    Let $b \in B$. Since $f$ is surjective, there is an $a \in A$ such that $f(a) = b$. Since $f$ is injective, only 1 such $a$ exists. This is true for any $b\in B$, so we can define:
-    \begin{equation*}
-        g \colon b \longmapsto \text{the unique element $a\in A$ such that $f(a) = b$}.
-    \end{equation*}
-    $g \circ f = \Id_A$:
-    
-    \noindent
-    $(g \circ f)(a) = g(f(a))$ which is by definition, the unique $a_1 \in A$ such that $f(a_1) = f(a)$. That unique $a_1$ is $a$, so $g(f(a)) = a$.
-
-    \medskip\noindent
-    $f \circ g = \Id_B$:
-
-    \noindent
-    $(f \circ g)(b) = f(g(b))$. $g(b)$ is an element $a\in A$ with $f(a) = b$, so $f(g(b)) = b$.
-
-    \medskip\noindent
-    Together, we see that $g$ is indeed the inverse of $f$, so we are done.
-\end{proof}
-\begin{remark}
-    When we look at the second implication's two pieces, proving $g \circ f = \Id_A$ used the uniqueness of $a_1$ (the injectivity property), while proving $f \circ g = \Id_B$ simply used that the value mapped onto $b$ (the surjectivity property). 
-    This gives some good indication that injectivity and surjectivity interact quite nicely on specific sides of compositions.
-\end{remark}
-
-\chapter{What are groups?}
-
-\section{Motivation}
+\include{chapters/ch0_basics_of_sets/chapter}
+\include{chapters/ch1_what_are_groups/chapter}
 
 \end{document}
